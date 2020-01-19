@@ -128,7 +128,7 @@ public protocol TrimmerViewDelegate: class {
         leftHandleKnob.translatesAutoresizingMaskIntoConstraints = false
         leftHandleView.addSubview(leftHandleKnob)
 
-        leftHandleKnob.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
+        leftHandleKnob.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
         leftHandleKnob.widthAnchor.constraint(equalToConstant: 2).isActive = true
         leftHandleKnob.centerYAnchor.constraint(equalTo: leftHandleView.centerYAnchor).isActive = true
         leftHandleKnob.centerXAnchor.constraint(equalTo: leftHandleView.centerXAnchor).isActive = true
@@ -146,7 +146,7 @@ public protocol TrimmerViewDelegate: class {
         rightHandleKnob.translatesAutoresizingMaskIntoConstraints = false
         rightHandleView.addSubview(rightHandleKnob)
 
-        rightHandleKnob.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.5).isActive = true
+        rightHandleKnob.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 0.3).isActive = true
         rightHandleKnob.widthAnchor.constraint(equalToConstant: 2).isActive = true
         rightHandleKnob.centerYAnchor.constraint(equalTo: rightHandleView.centerYAnchor).isActive = true
         rightHandleKnob.centerXAnchor.constraint(equalTo: rightHandleView.centerXAnchor).isActive = true
@@ -179,7 +179,7 @@ public protocol TrimmerViewDelegate: class {
 
     private func setupPositionBar() {
 
-        positionBar.frame = CGRect(x: 0, y: 0, width: 3, height: frame.height)
+        positionBar.frame = CGRect(x: 0, y: 0, width: 2, height: frame.height)
         positionBar.backgroundColor = positionBarColor
         positionBar.center = CGPoint(x: leftHandleView.frame.maxX, y: center.y)
         positionBar.layer.cornerRadius = 1
@@ -203,7 +203,7 @@ public protocol TrimmerViewDelegate: class {
     }
 
     private func updateMainColor() {
-        trimView.layer.borderColor = mainColor.cgColor
+        trimView.layer.borderColor = UIColor.clear.cgColor//mainColor.cgColor
         leftHandleView.backgroundColor = mainColor
         rightHandleView.backgroundColor = mainColor
     }
@@ -216,7 +216,9 @@ public protocol TrimmerViewDelegate: class {
     // MARK: - Trim Gestures
 
     @objc func handlePanGesture(_ gestureRecognizer: UIPanGestureRecognizer) {
-        guard let view = gestureRecognizer.view, let superView = gestureRecognizer.view?.superview else { return }
+        guard
+        let view = gestureRecognizer.view,
+        let superView = gestureRecognizer.view?.superview else { return }
         let isLeftGesture = view == leftHandleView
         switch gestureRecognizer.state {
 
@@ -325,6 +327,8 @@ public protocol TrimmerViewDelegate: class {
 
     public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         updateSelectedTime(stoppedMoving: true)
+      
+        
     }
 
     public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
@@ -334,5 +338,6 @@ public protocol TrimmerViewDelegate: class {
     }
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         updateSelectedTime(stoppedMoving: false)
+        positionBar.frame.origin.x =   leftHandleView.frame.maxX
     }
 }
