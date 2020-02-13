@@ -14,7 +14,7 @@ class AssetVideoScrollView: UIScrollView {
     private var widthConstraint: NSLayoutConstraint?
 
     let contentView = UIView()
-    public var maxDuration: Double = 15
+    public var maxDuration: Double = 60
     private var generator: AVAssetImageGenerator?
 
     override init(frame: CGRect) {
@@ -27,12 +27,16 @@ class AssetVideoScrollView: UIScrollView {
         setupSubviews()
     }
 
+    func resetScrollView(){
+        self.setContentOffset(.zero, animated: true)
+    }
+    
     private func setupSubviews() {
 
         backgroundColor = .clear
         showsVerticalScrollIndicator = false
         showsHorizontalScrollIndicator = false
-        clipsToBounds = true
+        clipsToBounds = false
 
         contentView.backgroundColor = .clear
         contentView.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +61,7 @@ class AssetVideoScrollView: UIScrollView {
             return
         }
 
+        
         generator?.cancelAllCGImageGeneration()
         removeFormerThumbnails()
         let newContentSize = setContentSize(for: asset)
@@ -115,6 +120,8 @@ class AssetVideoScrollView: UIScrollView {
         }
     }
 
+    
+    
     private func getThumbnailTimes(for asset: AVAsset, numberOfThumbnails: Int) -> [NSValue] {
         let timeIncrement = (asset.duration.seconds * 1000) / Double(numberOfThumbnails)
         var timesForThumbnails = [NSValue]()
@@ -163,3 +170,4 @@ class AssetVideoScrollView: UIScrollView {
         }
     }
 }
+
